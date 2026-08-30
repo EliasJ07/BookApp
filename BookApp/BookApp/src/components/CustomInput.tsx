@@ -1,0 +1,152 @@
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import React, { useState } from "react";
+import {
+  KeyboardTypeOptions,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+type CustomInputProps = {
+  onChangeText: (text: string) => void;
+  value: string;
+  placeholder: string;
+  type?: "default" | "password" | "email" | "number";
+};
+
+export default function CustomInput({
+  onChangeText,
+  value,
+  placeholder,
+  type = "default",
+}: CustomInputProps) {
+  const [isSecureText, setIsSecureText] = useState(
+    type === "password"
+  );
+
+  const isPasswordField = type === "password";
+
+  const iconName =
+    type === "password"
+      ? "lock"
+      : type === "email"
+      ? "alternate-email"
+      : undefined;
+
+  const keyboardType: KeyboardTypeOptions =
+    type === "email"
+      ? "email-address"
+      : type === "number"
+      ? "number-pad"
+      : "default";
+
+  const getError = () => {
+    if (
+      type === "email" &&
+      value.length > 0 &&
+      !value.includes("@")
+    ) {
+      return "Correo inválido";
+    }
+
+    if (
+      type === "password" &&
+      value.length > 0 &&
+      value.length < 4
+    ) {
+      return "La contraseña debe ser más fuerte";
+    }
+
+    return undefined;
+  };
+
+  const error = getError();
+
+  return (
+    <View style={styles.wrapper}>
+      <View
+        style={[
+          styles.inputContainer,
+          error && styles.inputContainerError,
+        ]}
+      >
+
+        
+        {iconName && (
+          <MaterialIcons
+            name={iconName}
+            size={22}
+            color="gray"
+          />
+        )}
+
+        {/* Input */}
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeText}
+          value={value}
+          placeholder={placeholder}
+          keyboardType={keyboardType}
+          secureTextEntry={isSecureText}
+        />
+        {isPasswordField && (
+          <TouchableOpacity
+            onPress={() =>
+              setIsSecureText(!isSecureText)
+            }
+          >
+            <Ionicons
+              name={isSecureText ? "eye-off" : "eye"}
+              size={22}
+              color="gray"
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+
+      {error && (
+        <Text style={styles.errorText}>
+          {error}
+        </Text>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  wrapper: {
+    marginBottom: 10,
+  },
+
+  inputContainer: {
+    backgroundColor: "lightgray",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+
+    borderRadius: 9,
+    borderColor: "gray",
+    borderWidth: 1,
+
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+
+  inputContainerError: {
+    borderColor: "red",
+  },
+
+  input: {
+    width: "70%",
+    paddingVertical: 12,
+  },
+
+  errorText: {
+    color: "red",
+    marginTop: 4,
+    marginLeft: 5,
+    fontSize: 12,
+  },
+});
