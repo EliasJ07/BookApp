@@ -1,16 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import CustomButton from './src/components/CustomButton';
-import React, { useState } from 'react';
-import CustomInput from './src/components/CustomInput';
-import { NavigationContainer } from '@react-navigation/native';
-import StackNavigator from './src/navigations/StackNavigator';
+import React from "react";
+import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
+import StackNavigator from "./src/navigations/StackNavigator";
+import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <StackNavigator />
-    </NavigationContainer>
-  );
+function AppNavigation() {
+  const { isDark } = useTheme();
+  return <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}><StackNavigator /></NavigationContainer>;
 }
 
+export default function App() {
+  return <ThemeProvider><AppNavigation /></ThemeProvider>;
+}

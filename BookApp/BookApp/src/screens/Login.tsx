@@ -13,7 +13,7 @@ export default function Login ({navigation}:any) {
       // setEmail("maria@unitec.edu")
 
       const handleLogin = () => {
-       navigation.navigate('Home', {email});
+       navigation.navigate('UserTabs');
     }
     
     return (

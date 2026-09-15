@@ -30,7 +30,7 @@ export default function StackNavigator() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="UserTabs" component={TabsNavigator} />
+      <Stack.Screen name="UserTabs" component={TabsNavigator} options={{ headerShown: false }} />
       
       <Stack.Screen
         name="UseEffect"
